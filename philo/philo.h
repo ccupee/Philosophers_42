@@ -29,8 +29,16 @@ typedef struct s_arguments
 
 typedef struct s_philo
 {
-	t_arguments *args;
+	pthread_t		id;
+	pthread_mutex_t	fork;
 }	t_philo;
+
+typedef struct s_table
+{
+	t_arguments *args;
+	t_philo	*philo;
+}	t_table;
+
 
 int		ft_atoi(const char *str);
 
