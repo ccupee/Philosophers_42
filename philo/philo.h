@@ -18,6 +18,8 @@
 # include <stdio.h>
 # include <unistd.h>
 
+typedef pthread_mutex_t mutex_t;
+
 typedef struct s_arguments
 {
 	int nbr;
@@ -30,13 +32,14 @@ typedef struct s_arguments
 typedef struct s_philo
 {
 	pthread_t		id;
-	pthread_mutex_t	fork;
+	mutex_t			right;
+	mutex_t			left;
 }	t_philo;
 
 typedef struct s_table
 {
 	t_arguments *args;
-	t_philo	*philo;
+	t_philo		**philo;
 }	t_table;
 
 
@@ -46,6 +49,6 @@ void	error(char *str);
 
 int		ft_isdigit(int c);
 
-void	check_arguments(int argc, char **argv);
+int	check_arguments(int argc, char **argv);
 
 #endif

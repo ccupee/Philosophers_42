@@ -35,22 +35,29 @@ void	error(char *str)
 	exit(EXIT_FAILURE);
 }
 
-void	check_arguments(int argc, char **argv)
+int	check_arguments(int argc, char **argv)
 {
 	int	i;
 	int	j;
 
 	i = 1;
 	if (argc != 5 && argc != 6)
-		error("Error: Invalid number of arguments.\n");
+	{
+		printf("Error: Invalid number of arguments.\n");
+		return (0);
+	}
 	while (i < argc)
 	{
 		j = -1;
 		while (++j < ft_strlen(argv[i]))
 		{
 			if (!ft_isdigit(argv[i][j]))
-				error("Error: Invalid arguments.\n");
+			{
+				printf("Error: Invalid arguments.\n");
+				return (0);
+			}
 		}
 		i++;
 	}
+	return (1);
 }

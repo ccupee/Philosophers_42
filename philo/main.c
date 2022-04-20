@@ -24,29 +24,32 @@ void	init_arguments(t_arguments *args, int argc, char **argv)
 		args->add_nbr = 0;
 }
 
-void	init_table(t_table *table)
+int	init_table(t_table *table, int argc, char **argv)
 {
 	int	i;
 
-	table->philo = (t_philo *)malloc(sizeof(t_philo) * table->args->nbr);
-	i = 0;
-	while ( i < table->args->nbr)
+	table->args = (t_arguments *)malloc(sizeof(t_arguments));
+	init_arguments(table->args, argc, argv);
+	table->philo = (t_philo **)malloc(sizeof(t_philo *) * table->args->nbr);
+	i = -1;
+	while (++i < table->args->nbr)
 	{
-		if (pthread_create(&table->philo[i]->id, NULL, (void*)printf, NULL) != 0)
-			error("Error: threads problem.\n");
+		table->philo[i] = (t_philo *)malloc(sizeof(t_philo));
+		if (pthread_create(&(table->philo[i]->id), NULL, (void*)printf, NULL) != 0)
+		{
+			printf("Error: threads problem.\n");
+			return(0);
+		}
 	}
+	return (1);
 }
 
 int main (int argc, char **argv)
 {
-	t_arguments	*args;
 	t_table	table;
-	t_philo	*philo;
 
-	philo = (t_philo *)malloc(sizeof(t_philo));
-	args = (t_arguments *)malloc(sizeof(t_arguments));
-	check_arguments(argc, argv);
-	init_arguments(args, argc, argv);
-	
+	if (!check_arguments(argc, argv))
+		return (0);
+	init_table(&table, argc, argv);
 	return (0);
 }
