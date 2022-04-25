@@ -18,6 +18,8 @@
 # include <stdio.h>
 # include <unistd.h>
 
+# define MAXNBR 200
+
 typedef pthread_mutex_t mutex_t;
 
 typedef struct s_arguments
@@ -32,14 +34,20 @@ typedef struct s_arguments
 typedef struct s_philo
 {
 	pthread_t		id;
-	mutex_t			right;
-	mutex_t			left;
+	int				right;
+	int				left;
+	int				nbr;
+	int				flag;
+	long			time;
+	int				times_to_eat;
 }	t_philo;
 
 typedef struct s_table
 {
 	t_arguments *args;
-	t_philo		**philo;
+	int			num;
+	t_philo		philos[MAXNBR];
+	mutex_t		forks[MAXNBR];
 }	t_table;
 
 
@@ -50,5 +58,7 @@ void	error(char *str);
 int		ft_isdigit(int c);
 
 int	check_arguments(int argc, char **argv);
+
+void	*ft_philo(void *data);
 
 #endif
